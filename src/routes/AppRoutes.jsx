@@ -5,6 +5,7 @@ import DashboardLayout from "../components/layout/DashboardLayout";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import SignupPage from "../features/auth/pages/SignupPage";
+import ForgotPasswordPage from "../features/auth/pages/ForgotPasswordPage";
 
 import DashboardPage from "../features/dashboard/pages/DashboardPage";
 
@@ -28,6 +29,8 @@ function AppRoutes() {
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />
 
       <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
+
+      <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
 
       <Route
         path={ROUTES.DASHBOARD}

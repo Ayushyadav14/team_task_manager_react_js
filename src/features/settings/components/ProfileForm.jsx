@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Input from "../../../components/common/Input";
@@ -7,35 +7,41 @@ import Button from "../../../components/common/Button";
 import {
   fetchCurrentUserProfile,
   updateCurrentUser,
-} from "../../../users/redux/userThunk";
+} from "../../uesrs/redux/userThunk";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../../lib/toast";
 
 function ProfileForm() {
   const dispatch = useDispatch();
 
-  const { profile, isLoading } = useSelector((state) => state.user);
+  const { profile, isLoading, error } = useSelector((state) => state.user);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-  });
+  const defaultValues = useMemo(
+    () => ({
+      name: profile?.name || "",
+      email: profile?.email || "",
+    }),
+    [profile],
+  );
+
+  const [overrides, setOverrides] = useState({});
+  const [formError, setFormError] = useState("");
+
+  const formData = {
+    ...defaultValues,
+    ...overrides,
+  };
 
   useEffect(() => {
     dispatch(fetchCurrentUserProfile());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (profile) {
-      setFormData({
-        name: profile.name || "",
-        email: profile.email || "",
-      });
-    }
-  }, [profile]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData((prev) => ({
+    setOverrides((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -44,7 +50,30 @@ function ProfileForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(updateCurrentUser(formData));
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+
+    if (!trimmedName || !trimmedEmail) {
+      setFormError("Name and email are required.");
+      return;
+    }
+
+    setFormError("");
+
+    const result = await dispatch(
+      updateCurrentUser({
+        ...formData,
+        name: trimmedName,
+        email: trimmedEmail,
+      })
+    );
+
+    if (result?.success) {
+      showSuccessToast("Profile updated");
+      setOverrides({});
+    } else if (result?.error) {
+      showErrorToast(result.error);
+    }
   };
 
   return (
@@ -76,6 +105,10 @@ function ProfileForm() {
         value={formData.email}
         onChange={handleChange}
       />
+
+      {(formError || error) && (
+        <p className="text-sm text-red-500">{formError || error}</p>
+      )}
 
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Updating..." : "Update Profile"}

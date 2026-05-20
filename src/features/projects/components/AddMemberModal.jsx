@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 
 import Modal from "../../../components/common/Modal";
 import Input from "../../../components/common/Input";
@@ -7,21 +6,13 @@ import Button from "../../../components/common/Button";
 
 import { addProjectMemberApi } from "../api/projectApi";
 
-function AddMemberModal({
-  isOpen,
-  onClose,
-  projectId,
-  onSuccess,
-}) {
-  const dispatch = useDispatch();
-
+function AddMemberModal({ isOpen, onClose, projectId, onSuccess }) {
   const [formData, setFormData] = useState({
     userId: "",
     role: "MEMBER",
   });
 
-  const [isLoading, setIsLoading] =
-    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,10 +29,7 @@ function AddMemberModal({
     try {
       setIsLoading(true);
 
-      await addProjectMemberApi(
-        projectId,
-        formData
-      );
+      await addProjectMemberApi(projectId, formData);
 
       onSuccess?.();
 
@@ -54,15 +42,8 @@ function AddMemberModal({
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Add Member"
-    >
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-5"
-      >
+    <Modal isOpen={isOpen} onClose={onClose} title="Add Member">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <Input
           label="User ID"
           name="userId"
@@ -82,24 +63,14 @@ function AddMemberModal({
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
           >
-            <option value="MEMBER">
-              MEMBER
-            </option>
+            <option value="MEMBER">MEMBER</option>
 
-            <option value="ADMIN">
-              ADMIN
-            </option>
+            <option value="ADMIN">ADMIN</option>
           </select>
         </div>
 
-        <Button
-          type="submit"
-          disabled={isLoading}
-          className="w-full"
-        >
-          {isLoading
-            ? "Adding..."
-            : "Add Member"}
+        <Button type="submit" disabled={isLoading} className="w-full">
+          {isLoading ? "Adding..." : "Add Member"}
         </Button>
       </form>
     </Modal>

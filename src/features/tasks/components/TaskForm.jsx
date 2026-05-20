@@ -7,12 +7,12 @@ import Button from "../../../components/common/Button";
 
 import { createTask } from "../redux/taskThunk";
 
-function TaskForm() {
+function TaskForm({ onSuccess }) {
   const dispatch = useDispatch();
 
-  const { selectedProject } = useSelector(
-    (state) => state.projects
-  );
+  const { selectedProject } = useSelector((state) => state.projects);
+
+  const { isLoading, error } = useSelector((state) => state.tasks);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -22,6 +22,8 @@ function TaskForm() {
     dueDate: "",
     tags: "",
   });
+
+  const [formError, setFormError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,20 +37,23 @@ function TaskForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!selectedProject?.id) {
+      setFormError("Please select a project first.");
+      return;
+    }
+
     const payload = {
       ...formData,
 
       tags: formData.tags
         .split(",")
-        .map((tag) => tag.trim()),
+        .map((tag) => tag.trim())
+        .filter(Boolean),
     };
 
-    dispatch(
-      createTask(
-        selectedProject.id,
-        payload
-      )
-    );
+    dispatch(createTask(selectedProject.id, payload));
+
+    onSuccess?.();
 
     setFormData({
       title: "",
@@ -91,9 +96,7 @@ function TaskForm() {
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">
-            Priority
-          </label>
+          <label className="text-sm font-medium text-gray-700">Priority</label>
 
           <select
             name="priority"
@@ -101,21 +104,13 @@ function TaskForm() {
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
           >
-            <option value="LOW">
-              LOW
-            </option>
+            <option value="LOW">LOW</option>
 
-            <option value="MEDIUM">
-              MEDIUM
-            </option>
+            <option value="MEDIUM">MEDIUM</option>
 
-            <option value="HIGH">
-              HIGH
-            </option>
+            <option value="HIGH">HIGH</option>
 
-            <option value="CRITICAL">
-              CRITICAL
-            </option>
+            <option value="CRITICAL">CRITICAL</option>
           </select>
         </div>
 
@@ -136,11 +131,12 @@ function TaskForm() {
         placeholder="frontend, backend, api"
       />
 
-      <Button
-        type="submit"
-        className="w-full"
-      >
-        Create Task
+      {(formError || error) && (
+        <p className="text-sm text-red-500">{formError || error}</p>
+      )}
+
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? "Creating..." : "Create Task"}
       </Button>
     </form>
   );

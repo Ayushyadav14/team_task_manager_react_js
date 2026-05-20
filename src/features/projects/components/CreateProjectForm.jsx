@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import Input from "../../../components/common/Input";
@@ -10,10 +10,12 @@ import { createProject } from "../redux/projectThunk";
 
 import { ROUTES } from "../../../routes/routeConstants";
 
-function CreateProjectForm() {
+function CreateProjectForm({ onSuccess }) {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const { isLoading } = useSelector((state) => state.projects);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -34,6 +36,8 @@ function CreateProjectForm() {
     e.preventDefault();
 
     await dispatch(createProject(formData));
+
+    onSuccess?.();
 
     navigate(ROUTES.PROJECTS);
   };
@@ -60,9 +64,7 @@ function CreateProjectForm() {
       />
 
       <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">
-          Status
-        </label>
+        <label className="text-sm font-medium text-gray-700">Status</label>
 
         <select
           name="status"
@@ -70,25 +72,16 @@ function CreateProjectForm() {
           onChange={handleChange}
           className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
         >
-          <option value="ACTIVE">
-            ACTIVE
-          </option>
+          <option value="ACTIVE">ACTIVE</option>
 
-          <option value="COMPLETED">
-            COMPLETED
-          </option>
+          <option value="COMPLETED">COMPLETED</option>
 
-          <option value="ON_HOLD">
-            ON_HOLD
-          </option>
+          <option value="ON_HOLD">ON_HOLD</option>
         </select>
       </div>
 
-      <Button
-        type="submit"
-        className="w-full"
-      >
-        Create Project
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? "Creating..." : "Create Project"}
       </Button>
     </form>
   );

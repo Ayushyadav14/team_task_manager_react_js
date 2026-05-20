@@ -1,4 +1,5 @@
 import {
+  forgotPasswordApi,
   loginUserApi,
   logoutUserApi,
   registerUserApi,
@@ -23,25 +24,42 @@ export const registerUser =
         credentials
       );
 
-      dispatch(
+      dispatch(setError(null));
+
+      const loginResult = await dispatch(
         loginUser({
           email: credentials.email,
           password: credentials.password,
         })
       );
 
-      return data;
+      if (loginResult?.success === false) {
+        return loginResult;
+      }
+
+      return { success: true, data };
     } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Registration failed";
+
       dispatch(
         setError(
-          error.response?.data?.message ||
-            "Registration failed"
+          errorMessage
         )
       );
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
     } finally {
       dispatch(setLoading(false));
     }
   };
+
+export const signupUser = (credentials) =>
+  registerUser(credentials);
 
 export const loginUser =
   (credentials) => async (dispatch) => {
@@ -53,13 +71,24 @@ export const loginUser =
       );
 
       dispatch(setCredentials(data));
+      dispatch(setError(null));
+
+      return { success: true, data };
     } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Login failed";
+
       dispatch(
         setError(
-          error.response?.data?.message ||
-            "Login failed"
+          errorMessage
         )
       );
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
     } finally {
       dispatch(setLoading(false));
     }
@@ -73,6 +102,7 @@ export const fetchCurrentUser =
       );
 
       dispatch(setUser(response.data));
+      dispatch(setError(null));
     } catch (error) {
       dispatch(
         setError(
@@ -80,6 +110,34 @@ export const fetchCurrentUser =
             "Failed to fetch user"
         )
       );
+    }
+  };
+
+export const forgotPassword =
+  (email) => async (dispatch) => {
+    try {
+      dispatch(setLoading(true));
+
+      await forgotPasswordApi({
+        email,
+      });
+
+      dispatch(setError(null));
+
+      return { success: true };
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Failed to send reset email";
+
+      dispatch(setError(errorMessage));
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 

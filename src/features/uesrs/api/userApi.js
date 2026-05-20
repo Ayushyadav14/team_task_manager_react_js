@@ -18,3 +18,13 @@ export const updateCurrentUserApi =
 
     return response.data;
   };
+
+export const changePasswordApi =
+  async (payload) => {
+    const response = await axiosInstance.post(
+      "/users/change-password",
+      payload
+    );
+
+    return response.data;
+  };

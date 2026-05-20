@@ -12,20 +12,10 @@ import { useAuth } from "../hooks/useAuth";
 
 import { ROUTES } from "../../../routes/routeConstants";
 
-import { registerUser } from "../redux/authThunk";
-
-import { useDispatch } from "react-redux";
-
 function SignupForm() {
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
-  const {
-    isLoading,
-    error,
-    isAuthenticated,
-  } = useAuth();
+  const { signup, isLoading, error, isAuthenticated } = useAuth();
 
   const {
     register,
@@ -36,7 +26,7 @@ function SignupForm() {
   });
 
   const onSubmit = async (data) => {
-    dispatch(registerUser(data));
+    await signup(data);
   };
 
   useEffect(() => {
@@ -46,10 +36,7 @@ function SignupForm() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <Input
         label="Name"
         placeholder="Enter your name"
@@ -77,26 +64,14 @@ function SignupForm() {
         label="Confirm Password"
         type="password"
         placeholder="Confirm password"
-        error={
-          errors.confirmPassword?.message
-        }
+        error={errors.confirmPassword?.message}
         {...register("confirmPassword")}
       />
 
-      {error && (
-        <p className="text-sm text-red-500">
-          {error}
-        </p>
-      )}
+      {error && <p className="text-sm text-red-500">{error}</p>}
 
-      <Button
-        type="submit"
-        disabled={isLoading}
-        className="w-full"
-      >
-        {isLoading
-          ? "Creating account..."
-          : "Signup"}
+      <Button type="submit" disabled={isLoading} className="w-full">
+        {isLoading ? "Creating account..." : "Signup"}
       </Button>
 
       <p className="text-center text-sm text-gray-500">

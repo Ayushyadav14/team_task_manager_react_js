@@ -15,12 +15,7 @@ import { ROUTES } from "../../../routes/routeConstants";
 function LoginForm() {
   const navigate = useNavigate();
 
-  const {
-    login,
-    isLoading,
-    error,
-    isAuthenticated,
-  } = useAuth();
+  const { login, isLoading, error, isAuthenticated } = useAuth();
 
   const {
     register,
@@ -41,10 +36,7 @@ function LoginForm() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <Input
         label="Email"
         type="email"
@@ -61,20 +53,19 @@ function LoginForm() {
         {...register("password")}
       />
 
-      {error && (
-        <p className="text-sm text-red-500">
-          {error}
-        </p>
-      )}
+      <div className="flex justify-end">
+        <Link
+          to={ROUTES.FORGOT_PASSWORD}
+          className="text-sm font-medium text-blue-600 hover:underline"
+        >
+          Forgot password?
+        </Link>
+      </div>
 
-      <Button
-        type="submit"
-        disabled={isLoading}
-        className="w-full"
-      >
-        {isLoading
-          ? "Logging in..."
-          : "Login"}
+      {error && <p className="text-sm text-red-500">{error}</p>}
+
+      <Button type="submit" disabled={isLoading} className="w-full">
+        {isLoading ? "Logging in..." : "Login"}
       </Button>
 
       <p className="text-center text-sm text-gray-500">

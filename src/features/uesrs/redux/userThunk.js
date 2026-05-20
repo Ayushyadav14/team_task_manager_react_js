@@ -1,6 +1,7 @@
 import {
   getCurrentUserApi,
   updateCurrentUserApi,
+  changePasswordApi,
 } from "../api/userApi";
 
 import {
@@ -18,6 +19,7 @@ export const fetchCurrentUserProfile =
         await getCurrentUserApi();
 
       dispatch(setProfile(data));
+      dispatch(setError(null));
     } catch (error) {
       dispatch(
         setError(
@@ -41,13 +43,50 @@ export const updateCurrentUser =
         );
 
       dispatch(setProfile(data));
+      dispatch(setError(null));
+
+      return { success: true };
     } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Failed to update profile";
+
       dispatch(
         setError(
-          error.response?.data?.message ||
-            "Failed to update profile"
+          errorMessage
         )
       );
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const changePassword =
+  (payload) => async (dispatch) => {
+    try {
+      dispatch(setLoading(true));
+
+      await changePasswordApi(payload);
+
+      dispatch(setError(null));
+
+      return { success: true };
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Failed to change password";
+
+      dispatch(setError(errorMessage));
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
     } finally {
       dispatch(setLoading(false));
     }

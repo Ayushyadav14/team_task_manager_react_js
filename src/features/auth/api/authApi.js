@@ -18,6 +18,17 @@ export const loginUserApi = async (data) => {
   return response.data;
 };
 
+export const forgotPasswordApi = async (
+  payload
+) => {
+  const response = await axiosInstance.post(
+    "/auth/forgot-password",
+    payload
+  );
+
+  return response.data;
+};
+
 export const refreshTokenApi = async (
   refreshToken
 ) => {

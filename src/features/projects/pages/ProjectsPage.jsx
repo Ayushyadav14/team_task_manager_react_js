@@ -1,16 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchProjects } from "../redux/projectThunk";
 
+import Modal from "../../../components/common/Modal";
+import Button from "../../../components/common/Button";
+
+import ProjectHeader from "../components/ProjectHeader";
 import ProjectList from "../components/ProjectList";
+import CreateProjectForm from "../components/CreateProjectForm";
 
 function ProjectsPage() {
   const dispatch = useDispatch();
 
-  const { projects, isLoading } = useSelector(
-    (state) => state.projects
-  );
+  const { projects, isLoading } = useSelector((state) => state.projects);
+
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProjects());
@@ -18,23 +23,27 @@ function ProjectsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">
-            Projects
-          </h1>
-
-          <p className="mt-1 text-gray-500">
-            Manage all your projects
-          </p>
-        </div>
-      </div>
+      <ProjectHeader
+        title="Projects"
+        subtitle="Manage all your projects"
+        actions={
+          <Button onClick={() => setIsCreateOpen(true)}>New Project</Button>
+        }
+      />
 
       {isLoading ? (
         <p>Loading projects...</p>
       ) : (
         <ProjectList projects={projects} />
       )}
+
+      <Modal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        title="Create Project"
+      >
+        <CreateProjectForm onSuccess={() => setIsCreateOpen(false)} />
+      </Modal>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import {
   addTaskComment,
   createTask,
   deleteTask,
+  deleteTaskComment,
   editTask,
   fetchTask,
   fetchTasks,
@@ -43,6 +44,9 @@ export const useTasks = () => {
   const commentOnTask = (projectId, taskId, payload) =>
     dispatch(addTaskComment(projectId, taskId, payload));
 
+  const removeComment = (projectId, taskId, commentId) =>
+    dispatch(deleteTaskComment(projectId, taskId, commentId));
+
   return {
     tasks,
     selectedTask,
@@ -57,5 +61,6 @@ export const useTasks = () => {
     changeTaskStatus,
     removeTask,
     commentOnTask,
+    removeComment,
   };
 };

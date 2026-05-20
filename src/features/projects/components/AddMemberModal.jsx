@@ -9,7 +9,7 @@ import { addProjectMemberApi } from "../api/projectApi";
 function AddMemberModal({ isOpen, onClose, projectId, onSuccess }) {
   const [formData, setFormData] = useState({
     userId: "",
-    role: "MEMBER",
+    projectRole: "CONTRIBUTOR",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -58,12 +58,12 @@ function AddMemberModal({ isOpen, onClose, projectId, onSuccess }) {
           </label>
 
           <select
-            name="role"
-            value={formData.role}
+            name="projectRole"
+            value={formData.projectRole}
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
           >
-            <option value="MEMBER">MEMBER</option>
+            <option value="CONTRIBUTOR">CONTRIBUTOR</option>
 
             <option value="ADMIN">ADMIN</option>
           </select>

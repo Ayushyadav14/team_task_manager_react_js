@@ -2,6 +2,7 @@ import {
   addTaskCommentApi,
   createTaskApi,
   deleteTaskApi,
+  deleteTaskCommentApi,
   getTaskApi,
   getTasksApi,
   updateTaskApi,
@@ -78,6 +79,8 @@ export const createTask =
       );
 
       dispatch(addTask(data));
+
+      return { success: true, data };
     } catch (error) {
       dispatch(
         setError(
@@ -85,6 +88,8 @@ export const createTask =
             "Failed to create task"
         )
       );
+
+      return { success: false };
     } finally {
       dispatch(setLoading(false));
     }
@@ -103,6 +108,8 @@ export const editTask =
       );
 
       dispatch(updateTask(data));
+
+      return { success: true, data };
     } catch (error) {
       dispatch(
         setError(
@@ -110,6 +117,8 @@ export const editTask =
             "Failed to update task"
         )
       );
+
+      return { success: false };
     } finally {
       dispatch(setLoading(false));
     }
@@ -177,6 +186,27 @@ export const addTaskComment =
         setError(
           error.response?.data?.message ||
             "Failed to add comment"
+        )
+      );
+    }
+  };
+
+export const deleteTaskComment =
+  (projectId, taskId, commentId) =>
+  async (dispatch) => {
+    try {
+      await deleteTaskCommentApi(
+        projectId,
+        taskId,
+        commentId
+      );
+
+      dispatch(fetchTask(projectId, taskId));
+    } catch (error) {
+      dispatch(
+        setError(
+          error.response?.data?.message ||
+            "Failed to delete comment"
         )
       );
     }

@@ -51,10 +51,9 @@ function ProfileForm() {
     e.preventDefault();
 
     const trimmedName = formData.name.trim();
-    const trimmedEmail = formData.email.trim();
 
-    if (!trimmedName || !trimmedEmail) {
-      setFormError("Name and email are required.");
+    if (!trimmedName) {
+      setFormError("Name is required.");
       return;
     }
 
@@ -62,9 +61,7 @@ function ProfileForm() {
 
     const result = await dispatch(
       updateCurrentUser({
-        ...formData,
         name: trimmedName,
-        email: trimmedEmail,
       })
     );
 
@@ -103,7 +100,7 @@ function ProfileForm() {
         type="email"
         name="email"
         value={formData.email}
-        onChange={handleChange}
+        disabled
       />
 
       {(formError || error) && (

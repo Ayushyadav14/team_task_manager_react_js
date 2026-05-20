@@ -2,10 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   loginUser,
+  logoutUser,
   signupUser,
 } from "../redux/authThunk";
-
-import { logout } from "../redux/authSlice";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -16,7 +15,7 @@ export const useAuth = () => {
 
   const signup = (data) => dispatch(signupUser(data));
 
-  const signout = () => dispatch(logout());
+  const signout = () => dispatch(logoutUser());
 
   return {
     ...auth,

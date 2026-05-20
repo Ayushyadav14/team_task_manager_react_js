@@ -23,6 +23,8 @@ export const fetchMembers =
       );
 
       dispatch(setMembers(data.content));
+
+      return { success: true };
     } catch (error) {
       dispatch(
         setError(
@@ -30,6 +32,8 @@ export const fetchMembers =
             "Failed to fetch users"
         )
       );
+
+      return { success: false };
     } finally {
       dispatch(setLoading(false));
     }
@@ -46,6 +50,8 @@ export const changeUserRole =
         );
 
       dispatch(updateMember(data));
+
+      return { success: true };
     } catch (error) {
       dispatch(
         setError(
@@ -53,6 +59,8 @@ export const changeUserRole =
             "Failed to update role"
         )
       );
+
+      return { success: false };
     }
   };
 
@@ -62,6 +70,8 @@ export const deleteUser =
       await deleteUserApi(userId);
 
       dispatch(removeMember(userId));
+
+      return { success: true };
     } catch (error) {
       dispatch(
         setError(
@@ -69,5 +79,7 @@ export const deleteUser =
             "Failed to delete user"
         )
       );
+
+      return { success: false };
     }
   };

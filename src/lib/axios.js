@@ -26,7 +26,13 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const body = response.data;
+    if (body && typeof body === "object" && "data" in body) {
+      return { ...response, data: body.data };
+    }
+    return response;
+  },
 
   async (error) => {
     const originalRequest = error.config;
@@ -54,7 +60,7 @@ axiosInstance.interceptors.response.use(
           }
         );
 
-        const newAccessToken = response.data.token;
+        const newAccessToken = response.data.data.token;
 
         localStorage.setItem(
           "token",

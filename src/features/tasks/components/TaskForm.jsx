@@ -51,18 +51,20 @@ function TaskForm({ onSuccess }) {
         .filter(Boolean),
     };
 
-    dispatch(createTask(selectedProject.id, payload));
+    const result = await dispatch(createTask(selectedProject.id, payload));
 
-    onSuccess?.();
+    if (result?.success) {
+      onSuccess?.();
 
-    setFormData({
-      title: "",
-      description: "",
-      assigneeId: "",
-      priority: "MEDIUM",
-      dueDate: "",
-      tags: "",
-    });
+      setFormData({
+        title: "",
+        description: "",
+        assigneeId: "",
+        priority: "MEDIUM",
+        dueDate: "",
+        tags: "",
+      });
+    }
   };
 
   return (

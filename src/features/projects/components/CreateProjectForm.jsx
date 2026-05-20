@@ -15,12 +15,11 @@ function CreateProjectForm({ onSuccess }) {
 
   const navigate = useNavigate();
 
-  const { isLoading } = useSelector((state) => state.projects);
+  const { isLoading, error } = useSelector((state) => state.projects);
 
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    status: "ACTIVE",
   });
 
   const handleChange = (e) => {
@@ -35,11 +34,12 @@ function CreateProjectForm({ onSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await dispatch(createProject(formData));
+    const result = await dispatch(createProject(formData));
 
-    onSuccess?.();
-
-    navigate(ROUTES.PROJECTS);
+    if (result?.success) {
+      onSuccess?.();
+      navigate(ROUTES.PROJECTS);
+    }
   };
 
   return (
@@ -63,22 +63,9 @@ function CreateProjectForm({ onSuccess }) {
         placeholder="Enter project description"
       />
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">Status</label>
-
-        <select
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-        >
-          <option value="ACTIVE">ACTIVE</option>
-
-          <option value="COMPLETED">COMPLETED</option>
-
-          <option value="ON_HOLD">ON_HOLD</option>
-        </select>
-      </div>
+      {error && (
+        <p className="text-sm text-red-500">{error}</p>
+      )}
 
       <Button type="submit" className="w-full" disabled={isLoading}>
         {isLoading ? "Creating..." : "Create Project"}

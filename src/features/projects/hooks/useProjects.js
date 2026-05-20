@@ -18,7 +18,7 @@ export const useProjects = () => {
     error,
   } = useSelector((state) => state.projects);
 
-  const getProjects = () => dispatch(fetchProjects());
+  const getProjects = (params) => dispatch(fetchProjects(params));
 
   const getProject = (projectId) =>
     dispatch(fetchProject(projectId));

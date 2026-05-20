@@ -20,8 +20,11 @@ export const registerUser =
     try {
       dispatch(setLoading(true));
 
+      const { confirmPassword, ...payload } =
+        credentials;
+
       const data = await registerUserApi(
-        credentials
+        payload
       );
 
       dispatch(setError(null));
@@ -71,6 +74,9 @@ export const loginUser =
       );
 
       dispatch(setCredentials(data));
+
+      await dispatch(fetchCurrentUser());
+
       dispatch(setError(null));
 
       return { success: true, data };

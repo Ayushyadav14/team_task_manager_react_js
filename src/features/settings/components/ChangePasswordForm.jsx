@@ -52,7 +52,6 @@ function ChangePasswordForm() {
       changePassword({
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
-        confirmPassword: formData.confirmPassword,
       }),
     );
 

@@ -17,11 +17,11 @@ import {
 } from "./projectSlice";
 
 export const fetchProjects =
-  () => async (dispatch) => {
+  (params) => async (dispatch) => {
     try {
       dispatch(setLoading(true));
 
-      const data = await getProjectsApi();
+      const data = await getProjectsApi(params);
 
       dispatch(setProjects(data));
     } catch (error) {
@@ -68,6 +68,8 @@ export const createProject =
       );
 
       dispatch(addProject(data));
+
+      return { success: true, data };
     } catch (error) {
       dispatch(
         setError(
@@ -75,6 +77,8 @@ export const createProject =
             "Failed to create project"
         )
       );
+
+      return { success: false };
     } finally {
       dispatch(setLoading(false));
     }
@@ -92,6 +96,8 @@ export const editProject =
       );
 
       dispatch(updateProject(data));
+
+      return { success: true, data };
     } catch (error) {
       dispatch(
         setError(
@@ -99,6 +105,8 @@ export const editProject =
             "Failed to update project"
         )
       );
+
+      return { success: false };
     } finally {
       dispatch(setLoading(false));
     }

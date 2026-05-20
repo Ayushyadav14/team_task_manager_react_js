@@ -4,6 +4,13 @@ const initialState = {
   projects: [],
   selectedProject: null,
 
+  pagination: {
+    page: 0,
+    size: 10,
+    totalPages: 0,
+    totalElements: 0,
+  },
+
   isLoading: false,
 
   error: null,
@@ -16,7 +23,16 @@ const projectSlice = createSlice({
 
   reducers: {
     setProjects: (state, action) => {
-      state.projects = action.payload;
+      state.projects = action.payload.content || [];
+
+      state.pagination = {
+        page: action.payload.page || 0,
+        size: action.payload.size || 10,
+        totalPages:
+          action.payload.totalPages || 0,
+        totalElements:
+          action.payload.totalElements || 0,
+      };
     },
 
     setSelectedProject: (state, action) => {

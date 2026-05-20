@@ -13,7 +13,7 @@ import CreateProjectForm from "../components/CreateProjectForm";
 function ProjectsPage() {
   const dispatch = useDispatch();
 
-  const { projects, isLoading } = useSelector((state) => state.projects);
+  const { projects, isLoading, error } = useSelector((state) => state.projects);
 
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
@@ -30,6 +30,10 @@ function ProjectsPage() {
           <Button onClick={() => setIsCreateOpen(true)}>New Project</Button>
         }
       />
+
+      {error && (
+        <p className="text-sm text-red-500">{error}</p>
+      )}
 
       {isLoading ? (
         <p>Loading projects...</p>

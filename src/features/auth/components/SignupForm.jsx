@@ -41,6 +41,7 @@ function SignupForm() {
         label="Name"
         placeholder="Enter your name"
         error={errors.name?.message}
+        autoComplete="name"
         {...register("name")}
       />
 
@@ -49,6 +50,7 @@ function SignupForm() {
         type="email"
         placeholder="Enter your email"
         error={errors.email?.message}
+        autoComplete="email"
         {...register("email")}
       />
 
@@ -57,6 +59,7 @@ function SignupForm() {
         type="password"
         placeholder="Create password"
         error={errors.password?.message}
+        autoComplete="new-password"
         {...register("password")}
       />
 
@@ -65,6 +68,7 @@ function SignupForm() {
         type="password"
         placeholder="Confirm password"
         error={errors.confirmPassword?.message}
+        autoComplete="new-password"
         {...register("confirmPassword")}
       />
 

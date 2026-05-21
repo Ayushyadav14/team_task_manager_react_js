@@ -1,11 +1,11 @@
-import axiosInstance from "../../../lib/axios";
+import axiosInstance, { extractData } from "../../../lib/axios";
 
 export const getMyDashboardApi = async () => {
   const response = await axiosInstance.get(
     "/dashboard/my"
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const getAdminDashboardApi =
@@ -14,7 +14,7 @@ export const getAdminDashboardApi =
       "/dashboard/admin"
     );
 
-    return response.data;
+    return extractData(response);
   };
 
 export const getProjectStatsApi = async (
@@ -24,5 +24,5 @@ export const getProjectStatsApi = async (
     `/dashboard/projects/${projectId}/stats`
   );
 
-  return response.data;
+  return extractData(response);
 };

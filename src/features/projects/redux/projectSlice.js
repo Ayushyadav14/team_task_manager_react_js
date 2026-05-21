@@ -23,16 +23,21 @@ const projectSlice = createSlice({
 
   reducers: {
     setProjects: (state, action) => {
-      state.projects = action.payload.content || [];
+      const payload = action.payload;
 
-      state.pagination = {
-        page: action.payload.page || 0,
-        size: action.payload.size || 10,
-        totalPages:
-          action.payload.totalPages || 0,
-        totalElements:
-          action.payload.totalElements || 0,
-      };
+      if (Array.isArray(payload)) {
+        state.projects = payload;
+      } else {
+        state.projects = payload.content || [];
+
+        state.pagination = {
+          page: payload.page || 0,
+          size: payload.size || 10,
+          totalPages: payload.totalPages || 0,
+          totalElements:
+            payload.totalElements || 0,
+        };
+      }
     },
 
     setSelectedProject: (state, action) => {

@@ -12,6 +12,21 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+// Helper: unwrap the { data: ... } envelope
+// if the backend wraps responses.
+export const extractData = (response) => {
+  const body = response.data;
+  if (
+    body &&
+    typeof body === "object" &&
+    !Array.isArray(body) &&
+    "data" in body
+  ) {
+    return body.data;
+  }
+  return body;
+};
+
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -26,13 +41,7 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    const body = response.data;
-    if (body && typeof body === "object" && "data" in body) {
-      return { ...response, data: body.data };
-    }
-    return response;
-  },
+  (response) => response,
 
   async (error) => {
     const originalRequest = error.config;
@@ -60,7 +69,10 @@ axiosInstance.interceptors.response.use(
           }
         );
 
-        const newAccessToken = response.data.data.token;
+        const refreshBody = response.data;
+        const newAccessToken =
+          refreshBody?.data?.token ||
+          refreshBody?.token;
 
         localStorage.setItem(
           "token",

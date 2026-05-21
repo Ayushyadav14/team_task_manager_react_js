@@ -1,4 +1,4 @@
-import axiosInstance from "../../../lib/axios";
+import axiosInstance, { extractData } from "../../../lib/axios";
 
 export const getCurrentUserApi =
   async () => {
@@ -6,7 +6,7 @@ export const getCurrentUserApi =
       "/users/me"
     );
 
-    return response.data;
+    return extractData(response);
   };
 
 export const updateCurrentUserApi =
@@ -16,7 +16,7 @@ export const updateCurrentUserApi =
       payload
     );
 
-    return response.data;
+    return extractData(response);
   };
 
 export const changePasswordApi =
@@ -26,5 +26,5 @@ export const changePasswordApi =
       payload
     );
 
-    return response.data;
+    return extractData(response);
   };

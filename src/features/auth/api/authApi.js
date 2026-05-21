@@ -1,4 +1,4 @@
-import axiosInstance from "../../../lib/axios";
+import axiosInstance, { extractData } from "../../../lib/axios";
 
 export const registerUserApi = async (data) => {
   const response = await axiosInstance.post(
@@ -6,7 +6,7 @@ export const registerUserApi = async (data) => {
     data
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const loginUserApi = async (data) => {
@@ -15,7 +15,7 @@ export const loginUserApi = async (data) => {
     data
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const forgotPasswordApi = async (
@@ -26,7 +26,7 @@ export const forgotPasswordApi = async (
     payload
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const refreshTokenApi = async (
@@ -39,7 +39,7 @@ export const refreshTokenApi = async (
     }
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const logoutUserApi = async (
@@ -52,5 +52,5 @@ export const logoutUserApi = async (
     }
   );
 
-  return response.data;
+  return extractData(response);
 };

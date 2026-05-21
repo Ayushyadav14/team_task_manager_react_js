@@ -1,4 +1,4 @@
-import axiosInstance from "../../../lib/axios";
+import axiosInstance, { extractData } from "../../../lib/axios";
 
 export const getTasksApi = async (
   projectId,
@@ -11,7 +11,7 @@ export const getTasksApi = async (
     }
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const getTaskApi = async (
@@ -22,7 +22,7 @@ export const getTaskApi = async (
     `/projects/${projectId}/tasks/${taskId}`
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const createTaskApi = async (
@@ -34,7 +34,7 @@ export const createTaskApi = async (
     payload
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const updateTaskApi = async (
@@ -47,7 +47,7 @@ export const updateTaskApi = async (
     payload
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const updateTaskStatusApi =
@@ -60,7 +60,7 @@ export const updateTaskStatusApi =
         }
       );
 
-    return response.data;
+    return extractData(response);
   };
 
 export const deleteTaskApi = async (
@@ -71,7 +71,7 @@ export const deleteTaskApi = async (
     `/projects/${projectId}/tasks/${taskId}`
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const addTaskCommentApi =
@@ -82,7 +82,7 @@ export const addTaskCommentApi =
         payload
       );
 
-    return response.data;
+    return extractData(response);
   };
 
 export const deleteTaskCommentApi =
@@ -96,5 +96,5 @@ export const deleteTaskCommentApi =
         `/projects/${projectId}/tasks/${taskId}/comments/${commentId}`
       );
 
-    return response.data;
+    return extractData(response);
   };

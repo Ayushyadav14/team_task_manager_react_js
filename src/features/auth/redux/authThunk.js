@@ -13,7 +13,7 @@ import {
   setUser,
 } from "./authSlice";
 
-import axiosInstance from "../../../lib/axios";
+import axiosInstance, { extractData } from "../../../lib/axios";
 
 export const registerUser =
   (credentials) => async (dispatch) => {
@@ -107,7 +107,7 @@ export const fetchCurrentUser =
         "/users/me"
       );
 
-      dispatch(setUser(response.data));
+      dispatch(setUser(extractData(response)));
       dispatch(setError(null));
     } catch (error) {
       dispatch(

@@ -1,4 +1,4 @@
-import axiosInstance from "../../../lib/axios";
+import axiosInstance, { extractData } from "../../../lib/axios";
 
 export const getUsersApi = async (
   page = 0,
@@ -14,7 +14,7 @@ export const getUsersApi = async (
     }
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const updateUserRoleApi =
@@ -27,7 +27,7 @@ export const updateUserRoleApi =
         }
       );
 
-    return response.data;
+    return extractData(response);
   };
 
 export const deleteUserApi = async (
@@ -37,5 +37,5 @@ export const deleteUserApi = async (
     `/users/${userId}`
   );
 
-  return response.data;
+  return extractData(response);
 };

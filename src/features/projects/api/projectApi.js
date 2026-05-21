@@ -1,4 +1,4 @@
-import axiosInstance from "../../../lib/axios";
+import axiosInstance, { extractData } from "../../../lib/axios";
 
 export const getProjectsApi = async (
   params
@@ -10,7 +10,7 @@ export const getProjectsApi = async (
     }
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const getProjectApi = async (
@@ -20,7 +20,7 @@ export const getProjectApi = async (
     `/projects/${projectId}`
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const createProjectApi = async (
@@ -31,7 +31,7 @@ export const createProjectApi = async (
     payload
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const updateProjectApi = async (
@@ -43,7 +43,7 @@ export const updateProjectApi = async (
     payload
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const deleteProjectApi = async (
@@ -53,7 +53,7 @@ export const deleteProjectApi = async (
     `/projects/${projectId}`
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const addProjectMemberApi = async (
@@ -65,15 +65,51 @@ export const addProjectMemberApi = async (
     payload
   );
 
-  return response.data;
+  return extractData(response);
 };
 
 export const removeProjectMemberApi =
-  async (projectId, userId) => {
+  async (projectId, email) => {
     const response =
       await axiosInstance.delete(
-        `/projects/${projectId}/members/${userId}`
+        `/projects/${projectId}/members`,
+        {
+          params: { email },
+        }
       );
 
-    return response.data;
+    return extractData(response);
   };
+
+export const searchProjectsApi = async (query) => {
+  const response = await axiosInstance.get("/projects/search", {
+    params: { q: query },
+  });
+
+  return extractData(response);
+};
+
+export const requestJoinProjectApi = async (projectId) => {
+  const response = await axiosInstance.post(
+    `/projects/${projectId}/join-requests`
+  );
+
+  return extractData(response);
+};
+
+export const getProjectJoinRequestsApi = async (projectId) => {
+  const response = await axiosInstance.get(
+    `/projects/${projectId}/join-requests`
+  );
+
+  return extractData(response);
+};
+
+export const updateJoinRequestStatusApi = async (projectId, requestId, status) => {
+  const response = await axiosInstance.patch(
+    `/projects/${projectId}/join-requests/${requestId}`,
+    { status }
+  );
+
+  return extractData(response);
+};

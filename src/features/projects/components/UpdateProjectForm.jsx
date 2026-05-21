@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Input from "../../../components/common/Input";
 import TextArea from "../../../components/common/TextArea";
 import Button from "../../../components/common/Button";
+import Dropdown from "../../../components/common/Dropdown";
 
 import { editProject } from "../redux/projectThunk";
 
@@ -79,16 +80,15 @@ function UpdateProjectForm({ project, onSuccess }) {
       <div className="space-y-2">
         <label className="text-sm font-medium text-gray-700">Status</label>
 
-        <select
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-        >
-          <option value="ACTIVE">ACTIVE</option>
-          <option value="COMPLETED">COMPLETED</option>
-          <option value="ON_HOLD">ON_HOLD</option>
-        </select>
+        <Dropdown
+          label={formData.status}
+          items={[
+            { label: "ACTIVE", value: "ACTIVE" },
+            { label: "ARCHIVED", value: "ARCHIVED" },
+          ]}
+          onSelect={(value) => handleChange({ target: { name: "status", value } })}
+          fullWidth
+        />
       </div>
 
       {formError && <p className="text-sm text-red-500">{formError}</p>}

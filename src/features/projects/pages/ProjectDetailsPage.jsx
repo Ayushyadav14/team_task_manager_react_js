@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { fetchProject, deleteProject } from "../redux/projectThunk";
+import { fetchTasks } from "../../tasks/redux/taskThunk";
 import { removeProjectMemberApi } from "../api/projectApi";
 
 import Button from "../../../components/common/Button";
@@ -26,12 +27,14 @@ function ProjectDetailsPage() {
   const projectId = id;
 
   const { selectedProject, isLoading } = useSelector((state) => state.projects);
+  const { tasks } = useSelector((state) => state.tasks);
   const { user } = useSelector((state) => state.auth);
   const admin = isAdmin(user);
 
   useEffect(() => {
     if (projectId) {
       dispatch(fetchProject(projectId));
+      dispatch(fetchTasks(projectId));
     }
   }, [dispatch, projectId]);
 
@@ -94,7 +97,7 @@ function ProjectDetailsPage() {
   return (
     <div className="space-y-6">
       <ProjectDetails
-        project={selectedProject}
+        project={{ ...selectedProject, tasks: tasks || [] }}
         actions={actions}
         onRemoveMember={admin ? handleRemoveMember : undefined}
       />
@@ -142,6 +145,7 @@ function ProjectDetailsPage() {
           onSuccess={() => {
             setIsAddTaskOpen(false);
             dispatch(fetchProject(projectId));
+            dispatch(fetchTasks(projectId));
           }}
         />
       </Modal>

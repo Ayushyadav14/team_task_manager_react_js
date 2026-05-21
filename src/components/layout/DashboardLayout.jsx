@@ -19,7 +19,7 @@ function DashboardLayout({ children }) {
   }, [dispatch, token, user]);
 
   return (
-    <div className="flex min-h-screen gap-2 bg-gray-200 p-2">
+    <div className="flex h-screen overflow-hidden gap-2 bg-gray-200 p-2">
       <Sidebar />
 
       <main className="flex-1 overflow-y-auto rounded-xl bg-gray-100 p-6">

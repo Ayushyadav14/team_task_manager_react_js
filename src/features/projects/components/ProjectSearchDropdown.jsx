@@ -21,7 +21,8 @@ function ProjectSearchDropdown({ value, onChange }) {
       setIsSearching(true);
       try {
         const data = await searchProjectsApi(debouncedQuery);
-        setResults(data || []);
+        const projectsList = Array.isArray(data) ? data : data?.content || [];
+        setResults(projectsList);
         setIsOpen(true);
       } catch (error) {
         console.error("Failed to search projects", error);

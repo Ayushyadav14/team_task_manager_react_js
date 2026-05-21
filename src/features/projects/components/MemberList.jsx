@@ -26,26 +26,26 @@ function MemberList({ members = [], onRemove }) {
       {members.map((member) => (
         <div
           key={member.id}
-          className="flex items-center justify-between rounded-xl border p-4"
+          className="flex items-center justify-between rounded-xl border p-4 gap-2"
         >
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
               {member.name?.charAt(0)?.toUpperCase() || "?"}
             </div>
 
-            <div>
-              <h3 className="font-semibold text-gray-800">
+            <div className="min-w-0">
+              <h3 className="truncate font-semibold text-gray-800">
                 {member.name}
               </h3>
 
-              <p className="text-sm text-gray-500">
+              <p className="truncate text-sm text-gray-500">
                 {member.email}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="shrink-0 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
               {member.projectRole || member.role}
             </span>
 

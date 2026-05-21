@@ -20,14 +20,17 @@ function Sidebar() {
       path: ROUTES.TASKS,
     },
     {
-      label: "Team",
-      path: ROUTES.TEAM,
-    },
-    {
       label: "Settings",
       path: ROUTES.SETTINGS,
     },
   ];
+
+  if (user?.role === "ADMIN") {
+    navItems.splice(3, 0, {
+      label: "Team",
+      path: ROUTES.TEAM,
+    });
+  }
 
   return (
     <aside className="flex w-64 flex-shrink-0 flex-col rounded-xl bg-white shadow-sm">

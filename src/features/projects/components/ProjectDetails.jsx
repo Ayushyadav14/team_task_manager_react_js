@@ -1,6 +1,7 @@
 import ProjectHeader from "./ProjectHeader";
 import ProjectStats from "./ProjectStats";
 import MemberList from "./MemberList";
+import TaskCard from "../../tasks/components/TaskCard";
 
 function ProjectDetails({ project, actions, onRemoveMember }) {
   if (!project) {
@@ -9,11 +10,18 @@ function ProjectDetails({ project, actions, onRemoveMember }) {
 
   const recentTasks = project.recentTasks || project.tasks || [];
 
+  const computedTaskCounts = {
+    total: recentTasks.length,
+    done: recentTasks.filter(t => t.status === "DONE").length,
+    inProgress: recentTasks.filter(t => t.status === "IN_PROGRESS").length,
+    overdue: recentTasks.filter(t => new Date(t.dueDate) < new Date() && t.status !== "DONE").length
+  };
+
   return (
     <div className="space-y-6">
       <ProjectHeader project={project} actions={actions} />
 
-      <ProjectStats taskCounts={project.taskCounts} />
+      <ProjectStats taskCounts={computedTaskCounts} />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="rounded-2xl bg-white p-6 shadow-sm">
@@ -33,10 +41,7 @@ function ProjectDetails({ project, actions, onRemoveMember }) {
           <div className="space-y-4">
             {recentTasks.length > 0 ? (
               recentTasks.map((task) => (
-                <div key={task.id} className="rounded-xl border p-4">
-                  <h3 className="font-semibold text-gray-800">{task.title}</h3>
-                  <p className="mt-1 text-sm text-gray-500">{task.status}</p>
-                </div>
+                <TaskCard key={task.id} task={task} />
               ))
             ) : (
               <p className="text-gray-500">No recent tasks</p>

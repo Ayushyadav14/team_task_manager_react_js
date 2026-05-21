@@ -7,9 +7,15 @@ function ProjectCard({ project }) {
     project.members?.length ??
     0;
 
+  let calculatedTaskCount = undefined;
+  if (project.taskCounts) {
+    calculatedTaskCount = Object.values(project.taskCounts).reduce((a, b) => a + (b || 0), 0);
+  }
+
   const taskCount =
     project.taskCount ??
     project.totalTasks ??
+    calculatedTaskCount ??
     project.tasks?.length ??
     0;
 

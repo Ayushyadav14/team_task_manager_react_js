@@ -9,6 +9,7 @@ import {
 
 import Button from "../../../components/common/Button";
 import Modal from "../../../components/common/Modal";
+import Dropdown from "../../../components/common/Dropdown";
 
 import TaskHeader from "../components/TaskHeader";
 import TaskList from "../components/TaskList";
@@ -58,19 +59,11 @@ function TasksPage() {
       <TaskHeader
         actions={
           <>
-            <select
-              value={selectedProject?.id || ""}
-              onChange={handleProjectChange}
-              className="rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 outline-none focus:border-blue-500"
-            >
-              <option value="">Select Project</option>
-
-              {projects.map((project) => (
-                <option key={project.id} value={project.id}>
-                  {project.name}
-                </option>
-              ))}
-            </select>
+            <Dropdown
+              label={selectedProject ? selectedProject.name : "Select Project"}
+              items={projects.map((project) => ({ label: project.name, value: project.id }))}
+              onSelect={(value) => handleProjectChange({ target: { value } })}
+            />
 
             <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white p-1">
               <button

@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function ActivityChart() {
   const { stats, adminStats } = useSelector((state) => state.dashboard);
@@ -18,12 +19,14 @@ function ActivityChart() {
           return {
             label: `Day ${index + 1}`,
             value: item,
+            projectId: null
           };
         }
 
         return {
           label: item.label || item.day || item.name || `Item ${index + 1}`,
           value: item.value ?? item.count ?? item.total ?? 0,
+          projectId: item.projectId || null
         };
       })
     : [];
@@ -35,26 +38,30 @@ function ActivityChart() {
       <h2 className="mb-4 text-xl font-semibold text-gray-800">Activity</h2>
 
       {activity.length === 0 ? (
-        <p className="text-gray-500">No activity data available</p>
+        <p className="text-gray-500">No pending join requests</p>
       ) : (
         <div className="space-y-4">
-          {activity.map((item) => (
-            <div key={item.label}>
-              <div className="mb-1 flex items-center justify-between text-sm text-gray-600">
-                <span>{item.label}</span>
-                <span className="font-medium text-gray-800">{item.value}</span>
-              </div>
+          {activity.map((item) => {
+            const innerContent = (
+              <>
+                <h3 className="font-medium text-gray-800 transition-colors group-hover:text-blue-600">{item.label}</h3>
+                <div className="flex flex-col items-end">
+                  <span className="text-lg font-bold text-blue-600">{item.value}</span>
+                  <span className="text-xs text-gray-500">Pending</span>
+                </div>
+              </>
+            );
 
-              <div className="h-2 w-full rounded-full bg-gray-100">
-                <div
-                  className="h-2 rounded-full bg-blue-600"
-                  style={{
-                    width: `${(item.value / maxValue) * 100}%`,
-                  }}
-                />
+            return item.projectId ? (
+              <Link key={item.label} to={`/projects/${item.projectId}`} className="group flex items-center justify-between rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-md hover:border-gray-200">
+                {innerContent}
+              </Link>
+            ) : (
+              <div key={item.label} className="flex items-center justify-between rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-md hover:border-gray-200">
+                {innerContent}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

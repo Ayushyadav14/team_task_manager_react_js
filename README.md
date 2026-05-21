@@ -1,16 +1,29 @@
-# React + Vite
+# Team Task Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
+Team Task Manager is a modern, responsive web application built to streamline project and task management for teams. It provides a clean, card-based interface where users can easily track their upcoming tasks, manage cross-functional projects, and oversee team workloads, all within a sleek dashboard environment.
 
-Currently, two official plugins are available:
+## Features
+- **Role-Based Dashboards:** Customized experiences and permissions for Admins and standard Members.
+- **Comprehensive Task Tracking:** Manage the full lifecycle of tasks (To-Do, In Progress, In Review, Done) with assigned priorities and due dates.
+- **Project Management:** Create new projects, manage team members, and handle pending requests to join projects.
+- **Interactive Minimalist UI:** A highly polished, responsive interface featuring dynamic hover states, colored status chips, and intuitive navigation.
+- **Secure Authentication:** Integrated JWT-based login and session management.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Folder Structure
+The application follows a modular, feature-based architecture:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```text
+src/
+├── components/       # Reusable, application-wide UI components (Layout, Sidebar, etc.)
+├── features/         # Domain-driven feature modules containing their own pages, components, and state
+│   ├── auth/         # Authentication, login forms, and auth state management
+│   ├── dashboard/    # Analytics, recent activity, and personalized widgets
+│   ├── projects/     # Project creation, details, and membership management
+│   ├── settings/     # User profile configuration and security settings
+│   ├── tasks/        # Task creation, lists, Kanban boards, and forms
+│   └── team/         # Team management and role assignments
+├── routes/           # Application routing and protected route logic
+├── store/            # Global state configuration (Redux Toolkit)
+└── utils/            # Helper functions and shared utilities
+```

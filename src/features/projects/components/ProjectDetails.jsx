@@ -2,7 +2,7 @@ import ProjectHeader from "./ProjectHeader";
 import ProjectStats from "./ProjectStats";
 import MemberList from "./MemberList";
 
-function ProjectDetails({ project, actions }) {
+function ProjectDetails({ project, actions, onRemoveMember }) {
   if (!project) {
     return <p className="text-gray-500">No project selected</p>;
   }
@@ -19,7 +19,10 @@ function ProjectDetails({ project, actions }) {
         <div className="rounded-2xl bg-white p-6 shadow-sm">
           <h2 className="mb-4 text-xl font-semibold text-gray-800">Members</h2>
 
-          <MemberList members={project.members || []} />
+          <MemberList
+            members={project.members || []}
+            onRemove={onRemoveMember}
+          />
         </div>
 
         <div className="rounded-2xl bg-white p-6 shadow-sm">

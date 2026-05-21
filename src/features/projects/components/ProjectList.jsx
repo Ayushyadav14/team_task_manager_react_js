@@ -1,6 +1,6 @@
 import ProjectCard from "./ProjectCard";
 
-function ProjectList({ projects }) {
+function ProjectList({ projects, onDeleteProject }) {
   if (!projects?.length) {
     return (
       <div className="rounded-2xl bg-white p-10 text-center shadow-sm">
@@ -21,6 +21,7 @@ function ProjectList({ projects }) {
         <ProjectCard
           key={project.id}
           project={project}
+          onDelete={onDeleteProject}
         />
       ))}
     </div>

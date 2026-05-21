@@ -1,6 +1,6 @@
 import TaskCard from "./TaskCard";
 
-function TaskList({ tasks }) {
+function TaskList({ tasks, onDeleteTask }) {
   if (!tasks?.length) {
     return (
       <div className="rounded-2xl bg-white p-10 text-center shadow-sm">
@@ -21,6 +21,7 @@ function TaskList({ tasks }) {
         <TaskCard
           key={task.id}
           task={task}
+          onDelete={onDeleteTask}
         />
       ))}
     </div>

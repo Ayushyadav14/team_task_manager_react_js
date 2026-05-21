@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Sidebar from "./Sidebar";
-import Topbar from "./Topbar";
 
 import { fetchCurrentUser } from "../../features/auth/redux/authThunk";
 
@@ -20,14 +19,12 @@ function DashboardLayout({ children }) {
   }, [dispatch, token, user]);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen gap-2 bg-gray-200 p-2">
       <Sidebar />
 
-      <div className="flex flex-1 flex-col">
-        <Topbar />
-
-        <main className="flex-1 p-6">{children}</main>
-      </div>
+      <main className="flex-1 overflow-y-auto rounded-xl bg-gray-100 p-6">
+        {children}
+      </main>
     </div>
   );
 }

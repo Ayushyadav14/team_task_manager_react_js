@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Modal from "../../../components/common/Modal";
+import Input from "../../../components/common/Input";
 import Button from "../../../components/common/Button";
 
 function AssignTaskModal({
@@ -9,14 +10,16 @@ function AssignTaskModal({
   members = [],
   onAssign,
 }) {
-  const [assigneeId, setAssigneeId] =
-    useState("");
+  const [assigneeEmail, setAssigneeEmail] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onAssign?.(assigneeId);
+    if (!assigneeEmail.trim()) return;
 
+    onAssign?.(assigneeEmail);
+
+    setAssigneeEmail("");
     onClose();
   };
 
@@ -30,36 +33,45 @@ function AssignTaskModal({
         onSubmit={handleSubmit}
         className="space-y-5"
       >
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">
-            Select Member
-          </label>
+        {members.length > 0 ? (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">
+              Select Member
+            </label>
 
-          <select
-            value={assigneeId}
-            onChange={(e) =>
-              setAssigneeId(e.target.value)
-            }
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-          >
-            <option value="">
-              Select member
-            </option>
-
-            {members.map((member) => (
-              <option
-                key={member.id}
-                value={member.id}
-              >
-                {member.name}
+            <select
+              value={assigneeEmail}
+              onChange={(e) => setAssigneeEmail(e.target.value)}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+            >
+              <option value="">
+                Select member
               </option>
-            ))}
-          </select>
-        </div>
+
+              {members.map((member) => (
+                <option
+                  key={member.id || member.email}
+                  value={member.email}
+                >
+                  {member.name} ({member.email})
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <Input
+            label="Assignee Email"
+            type="email"
+            value={assigneeEmail}
+            onChange={(e) => setAssigneeEmail(e.target.value)}
+            placeholder="Enter assignee email"
+          />
+        )}
 
         <Button
           type="submit"
           className="w-full"
+          disabled={!assigneeEmail.trim()}
         >
           Assign
         </Button>

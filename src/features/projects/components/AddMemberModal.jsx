@@ -8,7 +8,7 @@ import { addProjectMemberApi } from "../api/projectApi";
 
 function AddMemberModal({ isOpen, onClose, projectId, onSuccess }) {
   const [formData, setFormData] = useState({
-    userId: "",
+    email: "",
     projectRole: "CONTRIBUTOR",
   });
 
@@ -45,11 +45,12 @@ function AddMemberModal({ isOpen, onClose, projectId, onSuccess }) {
     <Modal isOpen={isOpen} onClose={onClose} title="Add Member">
       <form onSubmit={handleSubmit} className="space-y-5">
         <Input
-          label="User ID"
-          name="userId"
-          value={formData.userId}
+          label="Member Email"
+          name="email"
+          type="email"
+          value={formData.email}
           onChange={handleChange}
-          placeholder="Enter user id"
+          placeholder="Enter member email"
         />
 
         <div className="space-y-2">

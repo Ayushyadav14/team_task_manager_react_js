@@ -5,7 +5,7 @@ import Input from "../../../components/common/Input";
 import TextArea from "../../../components/common/TextArea";
 import Button from "../../../components/common/Button";
 
-import { editTask } from "../redux/taskThunk";
+import { editTask, updateTaskStatus } from "../redux/taskThunk";
 
 import { TASK_PRIORITY, TASK_STATUS } from "../../../utils/constants";
 
@@ -23,7 +23,7 @@ function UpdateTaskForm({ task, onSuccess }) {
     () => ({
       title: activeTask?.title || "",
       description: activeTask?.description || "",
-      assigneeId: activeTask?.assignee?.id || "",
+      assigneeEmail: activeTask?.assignee?.email || "",
       status: activeTask?.status || TASK_STATUS.TODO,
       priority:
         activeTask?.priority || TASK_PRIORITY.MEDIUM,
@@ -62,15 +62,24 @@ function UpdateTaskForm({ task, onSuccess }) {
       return;
     }
 
+    const { status, ...rest } = formData;
+
     const payload = {
-      ...formData,
-      tags: formData.tags
-        ? formData.tags
+      ...rest,
+      tags: rest.tags
+        ? rest.tags
             .split(",")
             .map((tag) => tag.trim())
             .filter(Boolean)
         : [],
     };
+
+    // Update status separately via PATCH if it changed
+    if (status !== activeTask?.status) {
+      await dispatch(
+        updateTaskStatus(projectId, activeTask.id, status)
+      );
+    }
 
     await dispatch(editTask(projectId, activeTask.id, payload));
 
@@ -99,11 +108,12 @@ function UpdateTaskForm({ task, onSuccess }) {
       />
 
       <Input
-        label="Assignee ID"
-        name="assigneeId"
-        value={formData.assigneeId}
+        label="Assignee Email"
+        name="assigneeEmail"
+        type="email"
+        value={formData.assigneeEmail}
         onChange={handleChange}
-        placeholder="User ID"
+        placeholder="Enter assignee email"
       />
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">

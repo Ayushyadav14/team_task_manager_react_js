@@ -17,7 +17,7 @@ function TaskForm({ onSuccess }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    assigneeId: "",
+    assigneeEmail: "",
     priority: "MEDIUM",
     dueDate: "",
     tags: "",
@@ -59,7 +59,7 @@ function TaskForm({ onSuccess }) {
       setFormData({
         title: "",
         description: "",
-        assigneeId: "",
+        assigneeEmail: "",
         priority: "MEDIUM",
         dueDate: "",
         tags: "",
@@ -89,11 +89,12 @@ function TaskForm({ onSuccess }) {
       />
 
       <Input
-        label="Assignee ID"
-        name="assigneeId"
-        value={formData.assigneeId}
+        label="Assignee Email"
+        name="assigneeEmail"
+        type="email"
+        value={formData.assigneeEmail}
         onChange={handleChange}
-        placeholder="User ID"
+        placeholder="Enter assignee email"
       />
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
